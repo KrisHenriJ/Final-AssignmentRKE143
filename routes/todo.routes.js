@@ -4,8 +4,8 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
     try {
-        const data = await db.query('SELECT * FROM todo;');
-        res.status(200).json({ todo: data.rows });
+        const data = await db.query('SELECT * FROM todos;');
+        res.status(200).json({ todos: data.rows });
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Midagi läks valesti' });
@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
     const { task } = req.body;
 
     try {
-        const data = await db.query('INSERT INTO todo (task) VALUES ($1);', [task]);
+        const data = await db.query('INSERT INTO todos (task) VALUES ($1);', [task]);
         console.log(data);
         res.status(200).json({message: `${data.rowCount} row inserted.`});
     } 
@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
 
 router.delete('/', async (req, res) => {
     const {id} = req.body;
-    const data = await db.query("SELECT * FROM todo WHERE id = $1;", [id]);
+    const data = await db.query("SELECT * FROM todos WHERE id = $1;", [id]);
 
     if(data.rows.length === 0) {
         res.json({message: "there no such task"});
