@@ -44,5 +44,8 @@ router.delete('/', async (req, res) => {
     }
 });
 
+router.get('/test', async (req, res) => {
+    res.status(200).json({message: "test"});
+});
 
 module.exports = router;
