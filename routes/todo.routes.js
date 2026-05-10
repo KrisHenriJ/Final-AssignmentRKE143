@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    console.log(req);
+    console.log(req.body);
     const { task } = req.body;
 
     try {
@@ -23,6 +23,7 @@ router.post('/', async (req, res) => {
     } 
     catch (error) {
         console.log(error);
+        res.status(500).json({ error: 'Midagi läks valesti' });
     } 
 
 });
@@ -32,10 +33,10 @@ router.delete('/', async (req, res) => {
     const data = await db.query("SELECT * FROM todos WHERE id = $1;", [id]);
 
     if(data.rows.length === 0) {
-        res.json({message: "there no such task"});
+        res.status(404).json({message: "Task not found"});
     } else {
         try {
-            const result = await db.query("DELETE FROM todo WHERE id = $1;", [id]);
+            const result = await db.query("DELETE FROM todos WHERE id = $1;", [id]);
             res.status(200).json({message: `${result.rowCount} row was deleted.`});
         }
         catch(error) {
